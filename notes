@@ -1,0 +1,516 @@
+Sass - "Syntactically Awesome StyleSheets"
+
+
+A language extension for CSS (preprocessor - converts it to CSS)
+Adds features not available in basic CSS
+Simplifies and maintains style sheets for projects
+SCSS - sassy SCSS - a valid CSS stylesheet is a valid SCSS file with the same meaning - .scss extension
+Older SASS, indented syntax - uses indentation rather than brackets to indicate nesting of selectors and newlines rather than using seimcolons to separate properties - .sass extension 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-----------------------------------------------------------------------------------------------------------------------
+
+FCC course - https://www.freecodecamp.org/learn/front-end-development-libraries/sass/store-data-with-sass-variables
+
+we will learn to...
+store data in variables,
+nest CSS
+create reusable style with mixins
+add logic and loops to styls
+and more!
+
+
+
+-----------------------------------------------------------------------------------------------------------------------
+
+Store Data with Sass Variables
+
+Unlike plain CSS, sass used variables - they are declared and set to store data like in JS let and const
+In sass we use $variableName
+
+here we make some vars
+$main-fonts: Arial, sans-serif;
+$headings-color: green;
+
+here we use the vars:
+h1 {
+  font-family: $main-fonts;
+  color: $headings-color;
+}
+
+this can be useful say in a situation where we need to change the color of a number of elements -  if the color is changed we only have to edit the code in the variable value
+note this seems a bit like bootstrap class="primary-color" etc  
+
+
+
+Create a variable $text-color and set it to red. Then change the value of the color property for the .blog-post and h2 to the $text-color variable.
+
+<style type='text/scss'>
+  $text-color: red;
+
+  .header{
+    text-align: center;
+  }
+  .blog-post, h2 {
+    color: $text-color
+  }
+</style>
+
+
+
+We can use this to change the whole document quickly - e.g. primary brand color goes from green to red
+
+design - primary, secondary, tertiary 
+if you stick to three it can make life easier!  
+
+-----------------------------------------------------------------------------------------------------------------------
+
+Nest CSS with Sass
+
+With SASS/SCSS you can nest rules as a good way of organizing a stile seet 
+
+typical style sheets will have elements on each line e.g.
+
+nav {
+  background-color: red;
+}
+
+nav ul {
+  list-style: none;
+}
+
+nav ul li {
+  display: inline-block;
+}
+
+
+//with css you can nest within parent elements thusly:
+
+
+nav {
+  background-color: red;
+
+  ul {
+    list-style: none;
+
+    li {
+      display: inline-block;
+    }
+  }
+}
+
+U
+se the nesting technique shown above to re-organize the CSS rules for both children of .blog-post element. For testing purposes, the h1 should come before the p element.
+
+<style type='text/scss'>
+  .blog-post {
+
+  
+  h1 {
+    text-align: center;
+    color: blue;
+  }
+  p {
+    font-size: 20px;
+  }
+  }
+</style>
+
+
+
+-----------------------------------------------------------------------------------------------------------------------
+
+
+Create Reusable CSS with Mixins
+
+
+A mixin is a group of declarations that can be reusedf throughout the style sheet 
+
+the definition starts with @mixin followed by a custom name 
+
+it can be dfeined like this 
+
+@mixin box-shadow($x, $y, $blur, $c){ 
+  -webkit-box-shadow: $x $y $blur $c;
+  -moz-box-shadow: $x $y $blur $c;
+  -ms-box-shadow: $x $y $blur $c;
+  box-shadow: $x $y $blur $c;
+}
+
+and called upon like this
+
+div {
+  @include box-shadow(0px, 0px, 4px, #fff);
+}
+
+Write a mixin for border-radius and give it a $radius parameter. It should use all the vendor prefixes from the example. Then use the border-radius mixin to give the #awesome element a border radius of 15px.
+
+<style type='text/scss'>
+
+@mixin border-radius($radius) { -webkit-border-radius: $radius;
+  -moz-border-radius: $radius;
+  -ms-border-radius: $radius;
+  border-radius: $radius;
+}
+
+
+
+  #awesome {
+    width: 150px;
+    height: 150px;
+    background-color: green;
+    @include border-radius(15px);
+
+  }
+</style>
+
+<div id="awesome"></div>
+
+
+
+-----------------------------------------------------------------------------------------------------------------------
+
+Use @if and @else to Add Logic To Your Styles
+
+In SASS if and else statements can be used to add logic e.g.
+
+@mixin make-bold($bool) {
+  @if $bool == true {
+    font-weight: bold;
+  }
+}
+
+
+else if  + if
+will test for more conditions 
+
+@mixin text-effect($val) {
+  @if $val == danger {
+    color: red;
+  }
+  @else if $val == alert {
+    color: yellow;
+  }
+  @else if $val == success {
+    color: green;
+  }
+  @else {
+    color: black;
+  }
+}
+
+
+Create a mixin called border-stroke that takes a parameter $val. The mixin should check for the following conditions using @if, @else if, and @else:
+
+light - 1px solid black
+medium - 3px solid black
+heavy - 6px solid black
+If $val is not light, medium, or heavy, the border should be set to none.
+
+
+<style type='text/scss'>
+
+
+@mixin border-stroke ($val) {
+  @if $val == light {
+    border: 1px solid black;
+  }
+  @else if $val == medium {
+    border: 3px solid black;
+  }
+  @else if $val == heavy {
+     border: 6px solid black;
+  }
+  @else {
+     border: none;
+  }
+}
+
+
+  #box {
+    width: 150px;
+    height: 150px;
+    background-color: red;
+    @include border-stroke(medium);
+  }
+</style>
+
+<div id="box"></div>
+
+
+-----------------------------------------------------------------------------------------------------------------------
+
+
+Use @for to Create a Sass Loop
+
+
+A for loop in sass works similarly to one in JS
+
+‘Start through end’ (includes end number as part of count)
+or
+‘start to end’ (excludes end number as part of count)
+
+start through end eg 
+
+@for $i from 1 through 12 {
+  .col-#{$i} { width: 100%/12 * $i; }
+}
+
+
+the {$i} part combines i with text to make a string
+
+converted to css it looks like this 
+
+.col-1 {
+  width: 8.33333%;
+}
+
+.col-2 {
+  width: 16.66667%;
+}
+
+...
+
+.col-12 {
+  width: 100%;
+}
+
+this is a powerful way to make a grid layout - we have 12 options for column widths now available as css classes
+
+
+Write a @for directive that takes a variable $j that goes from 1 to 6.
+It should create 5 classes called .text-1 to .text-5 where each has a font-size set to 15px multiplied by the index.
+
+
+
+@for $j from 1 through 6 {
+  .text-#{$j} { width: 15px * $i; }
+}
+
+
+<style type='text/scss'>
+
+@for $j from 1 through 6 {
+  .text-#{$j} { font-size: 15px * $j; }
+}
+
+</style>
+
+<p class="text-1">Hello</p>
+<p class="text-2">Hello</p>
+<p class="text-3">Hello</p>
+<p class="text-4">Hello</p>
+<p class="text-5">Hello</p>
+
+
+each heading gets bigger at the rate of n*15px
+
+
+-----------------------------------------------------------------------------------------------------------------------
+
+Use @each to Map Over Items in a List
+
+
+@for loops shwoed us how to use a start and end value to loop through a certain number of times
+
+we also have @each which loops over the items in a list or map
+on each iteration the var gets assigned the current value from the list or map 
+eg
+
+@each $color in blue, red, green {
+  .#{$color}-text {color: $color;}
+}
+
+
+a map will need a slightly different syntax:
+$colors: (color1: blue, color2: red, color3: green);
+
+@each $key, $color in $colors {
+  .#{$color}-text {color: $color;}
+}
+
+
+//note the $key var is needed to reference keys in the map
+otherwise we would have color1, color 2....
+in css our @each map looks like 
+
+.blue-text {
+  color: blue;
+}
+
+.red-text {
+  color: red;
+}
+
+.green-text {
+  color: green;
+}
+
+
+
+
+
+Write an @each directive that goes through a list: blue, black, red and assigns each variable to a .color-bg class, where the color part changes for each item. Each class should set the background-color the respective color.
+
+
+<style type='text/scss'>
+
+$colors: (color1: blue, color2: black, color3: red);
+
+@each $key, $color in $colors{
+  .#{$color}-bg {background-color: $color; }
+}
+
+  div {
+    height: 200px;
+    width: 200px;
+  }
+</style>
+
+<div class="blue-bg"></div>
+<div class="black-bg"></div>
+<div class="red-bg"></div>
+
+
+-----------------------------------------------------------------------------------------------------------------------
+
+Apply a Style Until a Condition is Met with @while
+
+we also have a @while loop similar to css
+it loops and creates CSS rules until a condition is met 
+we can make a grid with this similar to our foor loops 
+
+$x: 1;
+@while $x < 13 {
+  .col-#{$x} { width: 100%/12 * $x;}
+  $x: $x + 1;
+}
+
+
+here we define our var x set to 1 
+next the while directive creates the grid system while x is less than 13
+after setting the css rule for width, $x is incremented by 1 to avoid an infinite loop
+when $x hits 13 our while loop ends 
+
+Use @while to create a series of classes with different font-sizes.
+There should be 5 different classes from text-1 to text-5. Then set font-size to 15px multiplied by the current index number. Make sure to avoid an infinite loop!
+
+
+$x: 1;
+@while $x < 5 {
+  .text-#{$x} { font-size: 15 * $x;}
+  $x: $x + 1;
+}
+
+<style type='text/scss'>
+$x: 1;
+@while $x < 6 {
+  .text-#{$x} { font-size: 15 * $x;}
+  $x: $x + 1;
+}
+
+
+</style>
+
+<p class="text-1">Hello</p>
+<p class="text-2">Hello</p>
+<p class="text-3">Hello</p>
+<p class="text-4">Hello</p>
+<p class="text-5">Hello</p>
+
+
+-----------------------------------------------------------------------------------------------------------------------
+
+Split Your Styles into Smaller Chunks with Partials
+
+partials in sass are separate files that hold segments of css
+these can be imported and used in other sass files
+this can help keep code modulated and organised
+
+names for partials start with ‘_’ - tells sass not to convert to css
+
+sass files end with .scss
+
+we can use @import to bring the partial code to another file
+
+eg all mixins are saved in _mixins.scss and we need them in main.scss 
+
+@import 'mixins'
+
+note we do not need the _ and file extension in the import statement 
+once imported we can now use the code
+
+Write an @import statement to import a partial named _variables.scss into the main.scss file.
+
+
+<!-- The main.scss file -->
+
+@import 'variables'
+
+
+
+-----------------------------------------------------------------------------------------------------------------------
+
+
+Extend One Set of CSS Styles to Another Element
+
+sass has an @extend feature that will let us borrow css rukes from one element and build upon them in another
+
+eg this block below styles a .panel class
+
+.panel{
+  background-color: red;
+  height: 70px;
+  border: 2px solid green;
+}
+
+lets say we want a big panel with same base props but also with width and font-size, we can repeat the code but to make it more efficient it is better to extend like so 
+
+.big-panel{
+  @extend .panel;
+  width: 150px;
+  font-size: 2em;
+}
+
+
+
+Make a class .info-important that extends .info and also has a background-color set to magenta.
+
+
+<style type='text/scss'>
+  h3{
+    text-align: center;
+  }
+  .info{
+    width: 200px;
+    border: 1px solid black;
+    margin: 0 auto;
+  }
+
+  .info-important {
+    @extend .info;
+    background-color: magenta;
+  }  
+
+
+
+</style>
+
+
+
+
+that's SASS done :)
+
+I hope to make a log for a front end website built primarily using SASS
